@@ -76,3 +76,19 @@ class RealNVP(FlowModule):
             num_blocks_per_layer=2,
             batch_norm_between_layers=True
         )
+
+
+class MoGlow(FlowModule):
+    def __init__(self, num_variables, num_flows, lr, weight_decay, loss_wrapper=None, predict_wrapper=None):
+        FlowModule.__init__(self)
+        self.lr = lr
+        self.weight_decay = weight_decay
+        self.loss_wrapper = loss_wrapper
+        self.predict_wrapper = predict_wrapper
+        self.flow = SimpleRealNVP(
+            features=num_variables,
+            hidden_features=num_variables*2,
+            num_layers=num_flows,
+            num_blocks_per_layer=2,
+            batch_norm_between_layers=True
+        )
